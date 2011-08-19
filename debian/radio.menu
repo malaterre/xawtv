@@ -1,0 +1,2 @@
+?package(radio):needs="text" section="Applications/Sound" \
+	title="radio" command="/usr/bin/radio"

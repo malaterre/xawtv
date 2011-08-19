@@ -1,0 +1,28 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 02_xorg7.dpatch by Matej Vela <vela@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Adjust paths for X.Org 7.
+
+@DPATCH@
+diff -urNad motv-3.95~/Makefile.in motv-3.95/Makefile.in
+--- motv-3.95~/Makefile.in
++++ motv-3.95/Makefile.in
+@@ -29,7 +29,7 @@
+ # for CFLAGS
+ WARN_FLAGS	:= -Wall -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith
+ LFS_FLAGS	:= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+-X11_FLAGS	:= @X_CFLAGS@ @XFT_FLAGS@ -I/usr/X11R6/include/X11/fonts
++X11_FLAGS	:= @X_CFLAGS@ @XFT_FLAGS@ -I/usr/include/X11/fonts
+ LIB_FLAGS	:= -I. -I./vbistuff -I./x11 \
+ 		   -I$(srcdir)/jwz -I$(srcdir)/common -I$(srcdir)/console \
+ 		   -I$(srcdir)/x11 -I$(srcdir)/structs \
+@@ -49,7 +49,7 @@
+ VBI_LIBS	:= @LIBZVBI@
+ GL_LIBS		:= @LIBGL@
+ DV_LIBS		:= @LIBDV@
+-FS_LIBS		:= -L@x_libraries@ @FSLIB@
++FS_LIBS		:= @FSLIB@
+ DLFLAGS		:= @DLFLAGS@
+ 
+ # stuff configure has found

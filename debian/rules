@@ -1,0 +1,77 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
+export CFLAGS = -Wall -g
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+include /usr/share/dpatch/dpatch.make
+
+build: build-stamp
+build-stamp: patch-stamp
+	dh_testdir
+	./configure --prefix=/usr \
+		    --mandir=/usr/share/man \
+		    --disable-motif --enable-dv
+	$(MAKE)
+	touch build-stamp
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp debian/xawtv-plugins.install.kfreebsd*
+	[ ! -f Makefile ] || $(MAKE) distclean
+	dh_clean
+	debconf-updatepo
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
+	grep -v v4l debian/xawtv-plugins.install    >  debian/xawtv-plugins.install.kfreebsd-i386
+	echo "debian/tmp/usr/lib/xawtv/drv0-bsd.so" >> debian/xawtv-plugins.install.kfreebsd-i386
+	cp debian/xawtv-plugins.install.kfreebsd-i386 debian/xawtv-plugins.install.kfreebsd-amd64
+	dh_install $(no_packages) -s
+	# fix v4l-conf suid-root lintian warning
+	mkdir -p debian/v4l-conf/usr/share/lintian/overrides
+	echo "v4l-conf: setuid-binary" \
+		> debian/v4l-conf/usr/share/lintian/overrides/v4l-conf
+	# fix xawtv.bin manual page lintian warning
+	mkdir -p debian/xawtv/usr/share/lintian/overrides
+	echo "xawtv: binary-without-manpage usr/bin/xawtv.bin" \
+		> debian/xawtv/usr/share/lintian/overrides/xawtv
+	# install desktop file for xawtv
+	install -d $(CURDIR)/debian/xawtv/usr/share/applications
+	install -m 644 debian/xawtv.desktop $(CURDIR)/debian/xawtv/usr/share/applications
+	# install xawtv as xawtv.bin and xawtv.sh as xawtv
+	mv $(CURDIR)/debian/xawtv/usr/bin/xawtv $(CURDIR)/debian/xawtv/usr/bin/xawtv.bin
+	mv $(CURDIR)/debian/xawtv/usr/bin/xawtv.sh $(CURDIR)/debian/xawtv/usr/bin/xawtv
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installmenu
+	dh_installdebconf
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms -X/usr/bin/v4l-conf
+	dh_installdeb -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

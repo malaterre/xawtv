@@ -1,0 +1,18 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 16_xawtv_v4l2_buffer.dpatch by pinchartl
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Set v4l2_buffer.memory to V4L2_MEMORY_MMAP when calling VIDIOC_DQBUF.
+
+@DPATCH@
+diff -urNad xawtv-3.95.dfsg.1~/libng/plugins/drv0-v4l2.c xawtv-3.95.dfsg.1/libng/plugins/drv0-v4l2.c
+--- xawtv-3.95.dfsg.1~/libng/plugins/drv0-v4l2.c	2007-10-16 19:23:11.111287329 +0200
++++ xawtv-3.95.dfsg.1/libng/plugins/drv0-v4l2.c	2007-10-16 19:26:14.641746134 +0200
+@@ -768,6 +768,7 @@
+     /* get it */
+     memset(&buf,0,sizeof(buf));
+     buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
++    buf.memory = V4L2_MEMORY_MMAP;
+     if (-1 == xioctl(h->fd,VIDIOC_DQBUF,&buf, 0))
+ 	return -1;
+     h->waiton++;

@@ -1,0 +1,40 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 03_libquicktime.dpatch by Joey Hess <joeyh@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Update includes to work with current libquicktime-dev, which has moved
+## DP: them to lqt/
+
+@DPATCH@
+diff -urNad xawtv-3.95~/libng/plugins/read-qt.c xawtv-3.95/libng/plugins/read-qt.c
+--- xawtv-3.95~/libng/plugins/read-qt.c
++++ xawtv-3.95/libng/plugins/read-qt.c
+@@ -4,9 +4,9 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <pthread.h>
+-#include <quicktime/quicktime.h>
+-#include <quicktime/colormodels.h>
+-#include <quicktime/lqt.h>
++#include <lqt/quicktime.h>
++#include <lqt/colormodels.h>
++#include <lqt/lqt.h>
+ 
+ #include "grab-ng.h"
+ 
+diff -urNad xawtv-3.95~/libng/plugins/write-qt.c xawtv-3.95/libng/plugins/write-qt.c
+--- xawtv-3.95~/libng/plugins/write-qt.c
++++ xawtv-3.95/libng/plugins/write-qt.c
+@@ -4,9 +4,9 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <pthread.h>
+-#include <quicktime/quicktime.h>
+-#include <quicktime/colormodels.h>
+-#include <quicktime/lqt.h>
++#include <lqt/quicktime.h>
++#include <lqt/colormodels.h>
++#include <lqt/lqt.h>
+ 
+ #include "grab-ng.h"
+ 

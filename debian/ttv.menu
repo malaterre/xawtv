@@ -1,0 +1,2 @@
+?package(ttv):needs="text" section="Applications/Viewers" \
+	title="ttv" command="/usr/bin/ttv"

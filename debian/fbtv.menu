@@ -1,0 +1,2 @@
+?package(fbtv):needs="vc" section="Applications/Viewers" \
+	title="fbtv" command="/usr/bin/fbtv"

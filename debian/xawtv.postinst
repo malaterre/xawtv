@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# debconf lib
+. /usr/share/debconf/confmodule
+
+# init variables
+mode="$1"
+mkdev="true"
+mkcfg="true"
+tvnorm=""
+freqtab=""
+doscan=""
+
+# create v4l devices ?
+test -c /dev/.devfsd -o -c /dev/video0 -o -c /dev/v4l/video0 && mkdev="false"
+if test "$mkdev" = "true"; then
+	db_get xawtv/makedev
+	mkdev="$RET"
+fi
+
+# build xawtv config?
+if test -s /etc/X11/xawtvrc; then
+	mkcfg="false"
+fi
+if test "$mode" = "reconfigure"; then
+	mkcfg="true"
+fi
+if test "$mkcfg" = "true"; then
+	db_get xawtv/build-config
+	mkcfg="$RET"
+fi
+
+if test "$mkcfg" = "true"; then
+	# configuration
+	db_get xawtv/tvnorm
+	tvnorm="$RET"
+	db_get xawtv/freqtab
+	freqtab="$RET"
+	db_get xawtv/channel-scan
+	doscan="$RET"
+fi
+
+#########################################################
+db_stop
+
+# create special files
+if test "$mkdev" = "true"; then
+	(cd /dev;/sbin/MAKEDEV v4l)
+fi
+
+# create default config
+if test "$mkcfg" = "true"; then
+	cmd="scantv -n $tvnorm -f $freqtab -o /etc/X11/xawtvrc"
+	test "$doscan" = "false" && cmd="$cmd -s"
+	$cmd
+fi
+
+#########################################################
+#DEBHELPER#

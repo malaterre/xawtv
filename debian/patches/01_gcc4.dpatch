@@ -1,0 +1,18 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 01_gcc4.dpatch by Matej Vela <vela@debian.org>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: x11/vbi-gui.c: Include "grab-ng.h" for STRTAB definition.
+
+@DPATCH@
+diff -urNad motv-3.95~/x11/vbi-gui.c motv-3.95/x11/vbi-gui.c
+--- motv-3.95~/x11/vbi-gui.c
++++ motv-3.95/x11/vbi-gui.c
+@@ -44,6 +44,7 @@
+ #include "vbi-x11.h"
+ #include "vbi-gui.h"
+ 
++#include "grab-ng.h"
+ #include "channel.h"
+ 
+ static int tt_debug = 1;
