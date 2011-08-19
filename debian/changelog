@@ -1,3 +1,10 @@
+xawtv (3.101-1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add support for V4L2
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Fri, 19 Aug 2011 12:31:45 +0200
+
 xawtv (3.95.dfsg.1-8.1) unstable; urgency=low
 
   * Non-maintainer upload.

@@ -1,9 +1,7 @@
 debian/tmp/usr/lib/xawtv/bilinear.so
 debian/tmp/usr/lib/xawtv/conv-mjpeg.so
 debian/tmp/usr/lib/xawtv/cubic.so
-debian/tmp/usr/lib/xawtv/drv0-v4l2-old.so
 debian/tmp/usr/lib/xawtv/drv0-v4l2.so
-debian/tmp/usr/lib/xawtv/drv1-v4l.so
 debian/tmp/usr/lib/xawtv/flt-disor.so
 debian/tmp/usr/lib/xawtv/flt-gamma.so
 debian/tmp/usr/lib/xawtv/flt-invert.so

@@ -15,6 +15,7 @@ include /usr/share/dpatch/dpatch.make
 build: build-stamp
 build-stamp: patch-stamp
 	dh_testdir
+	./autogen.sh
 	./configure --prefix=/usr \
 		    --mandir=/usr/share/man \
 		    --disable-motif --enable-dv
